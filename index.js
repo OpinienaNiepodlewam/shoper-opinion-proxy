@@ -1,24 +1,22 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://pl.sklep88test2.shoperapp.pl');
+  res.setHeader('Access-Control-Allow-Origin', 'https://sklep.niepodlewam.pl'); // <-- WAŻNE
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Preflight OK
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(200).end();
+    return;
   }
 
   try {
-    const { productId, name, rating, comment } = req.body;
+    const body = req.body;
 
-    console.log('DANE OTRZYMANE:', { productId, name, rating, comment });
+    // Tutaj możesz wysłać dane do np. Google Sheets, bazy danych itd.
+    console.log('Otrzymano opinię:', body);
 
-    return res.status(200).json({ message: 'Opinia odebrana!' });
-  } catch (err) {
-    console.error('Błąd:', err);
-    return res.status(500).json({ error: 'Błąd serwera' });
+    res.status(200).json({ message: 'Opinia zapisana pomyślnie' });
+  } catch (error) {
+    console.error('Błąd serwera:', error);
+    res.status(500).json({ message: 'Błąd serwera' });
   }
 }
